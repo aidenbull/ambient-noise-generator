@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ambient Noise Generator</title>
+        <style>
+            body {
+                background: #66b1e0;
+                font-family: 'Alef';
+            }
+
+            h1 {
+                font-family: 'Alef';
+                font-size: 64px;
+                white-space: initial;
+                text-align: center;
+                color: #ffffff;
+            }
+
+            .main {
+                margin-left: auto;
+                margin-right: auto;
+                overflow: hidden;
+            }
+
+            .send-left {
+                float: left !important;
+            }
+
+            .send-right {
+                float:right !important;
+            }
+
+            .top-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1; 
+                background-color: black;
+                color: white;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            
+            .bar-item{
+                padding: 8px 16px;
+                width: auto;
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .grid-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+                grid-gap: 30px;
+                padding: 10px;
+            }
+
+            .sample-icon{
+                margin: auto !important;
+                width: 100% !important;
+                position: relative !important;
+                text-align: center !important;
+                font-size: 10em !important;
+            }
+
+            .sample-volume{
+                width: 168px;
+                margin: auto;
+                position:relative;
+            }
+
+            .modal-box{
+                display: none;
+                position: fixed;
+                left: 0;
+                right: 0;
+                z-index: 2;
+                width: 50%;
+                margin: 5% auto;
+                border: 1px solid grey;
+                background-color: gainsboro;
+            }
+
+            .modal-header{
+                padding: 4px 12px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 24px;
+                background-color: white;
+            }
+
+            .modal-content{
+                background-color: white;
+                height: 100%;
+                width: 100%;
+            }
+
+            .modal-text-box{
+                width: 70%;
+            }
+
+            .modal-button{
+                width: 20%;
+                float: right;
+            }
+
+            /*
+                For overwriting the standard range form.
+            */
+            .slider {
+                -webkit-appearance: none;
+                width: 100%;
+                height: 5px;
+                border-radius: 5px;  
+                background: rgba(255,255,255,.3);
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%; 
+                background: white;
+                cursor: pointer;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: white;
+                cursor: pointer;
+            }
+
+            /*
+                For the three way toggle.
+            */
+            .three-state-button{
+                text-align: center;
+            }
+
+            .toggle_radio{
+                position: relative;
+                background: rgba(255,255,255,.1);
+                margin: 4px auto;
+                overflow: hidden;
+                padding: 0 !important;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                position: relative;
+                height: 26px;
+                width: 168px;
+            }
+
+            .toggle_radio > * {
+                float: left;
+            }
+
+            .toggle_radio input[type=radio]{
+                display: none;
+                /*position: fixed;*/
+            }
+
+            .toggle_radio label{
+                font-family: Arial, Helvetica, sans-serif;
+                color: rgba(255,255,255,.9);
+                z-index: 0;
+                display: block;
+                width: 50px;
+                height: 20px;
+                margin: 3px 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                cursor: pointer;
+                z-index: 1;
+                /*background: rgba(0,0,0,.1);*/
+                text-align: center;
+                /*margin: 0 2px;*/
+                /*background: blue;*/ /*make it blue*/
+            }
+
+            .toggle_option_slider1{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low1:checked ~ .toggle_option_slider1{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med1:checked ~ .toggle_option_slider1{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high1:checked ~ .toggle_option_slider1{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+
+
+            .toggle_option_slider2{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low2:checked ~ .toggle_option_slider2{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med2:checked ~ .toggle_option_slider2{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high2:checked ~ .toggle_option_slider2{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+
+
+            .toggle_option_slider3{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low3:checked ~ .toggle_option_slider3{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med3:checked ~ .toggle_option_slider3{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high3:checked ~ .toggle_option_slider3{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+
+
+
+            .toggle_option_slider4{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low4:checked ~ .toggle_option_slider4{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med4:checked ~ .toggle_option_slider4{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high4:checked ~ .toggle_option_slider4{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+
+
+
+            .toggle_option_slider5{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low5:checked ~ .toggle_option_slider5{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med5:checked ~ .toggle_option_slider5{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high5:checked ~ .toggle_option_slider5{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+
+
+            .toggle_option_slider6{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low6:checked ~ .toggle_option_slider6{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med6:checked ~ .toggle_option_slider6{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high6:checked ~ .toggle_option_slider6{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+
+
+
+            .toggle_option_slider7{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low7:checked ~ .toggle_option_slider7{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med7:checked ~ .toggle_option_slider7{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high7:checked ~ .toggle_option_slider7{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+
+
+
+            .toggle_option_slider8{
+                /*display: none;*/
+                /*background: red;*/
+                width: 50px;
+                height: 20px;
+                position: absolute;
+                top: 3px;
+                /*-webkit-border-radius: 50px;
+                -moz-border-radius: 50px;*/
+                border-radius: 50px;
+                /*-webkit-transition: all .4s ease;
+                -moz-transition: all .4s ease;
+                -o-transition: all .4s ease;
+                -ms-transition: all .4s ease;*/
+                transition: all .4s ease;
+            }
+
+            #low8:checked ~ .toggle_option_slider8{
+                background: rgba(255,255,255,.3);
+                left: 3px;
+            }
+
+            #med8:checked ~ .toggle_option_slider8{
+                background: rgba(255,255,255,.3);
+                left: 59px;
+            }
+
+            #high8:checked ~ .toggle_option_slider8{
+                background: rgba(255,255,255,.3);
+                left: 114px;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='https://fonts.googleapis.com/css?family=Alef' rel='stylesheet'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'>
+    </head>
+    
+    <body class="body">
+        <!--Top Bar-->
+        <div class="top-bar">
+            <div class="send-left">
+                <i id="import" onclick="importPopup()" class="bar-item material-icons">add</i>
+                <i id="export" onclick="exportPopup()" class="bar-item material-icons">forward</i>
+                <i id="save" onclick="savePopup()" class="bar-item material-icons">save</i>
+            </div>
+            <div class="send-right">
+                <i id="volumeIcon" class="bar-item material-icons">volume_down</i>
+                <div class="bar-item">
+                        <input class="slider" oninput="masterSliderVolume(this)" type="range" id="volume" min="0" max="100" step="1" value="50">
+                </div>
+                <i onclick="masterPlayPause(this)" class="bar-item material-icons">pause_circle_outline</i>
+            </div>
+        </div>
+
+        <div id="modal-import" class="modal-box">
+            <div class="modal-header">
+                Import...
+                <i style="padding: 8px; float: right;" class="fas fa-city"></i>
+            </div>
+            <div class="modal-content">
+                <div style="padding: 8px;" id="modal-import-icon-line">
+                    <input style="width: 70%" type="text" value="Icon Path">
+                    <button style="width: 20%; float: right;" type="button">Browse</button>
+                </div>
+                <div style="padding: 8px;" id="modal-import-sample-title">
+                    <input style="width: 70%" type="text" value="Sample Title">
+                    <button style="width: 20%; float: right;" type="button">Browse</button>
+                </div>
+                <div style="padding: 8px;" id="modal-import-sample-title">
+                    <input style="width: 70%" type="text" value="Sample Path">
+                    <button style="width: 20%; float: right;" type="button">Browse</button>
+                </div>
+                <div style="padding: 8px; float: right;">
+                    <button id="modal-import-confirm" onclick="popupClose(this)" type="button">Import</button>
+                    <button id="modal-import-close" onclick="popupClose(this)" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-export" class="modal-box">
+            <div class="modal-header">
+                Export Current Preset...
+            </div>
+            <div class="modal-content">
+                <div style="padding: 8px;" id="modal-export-time">
+                    Length: 
+                    <input style="width: 5%" type="text" value="0">
+                    hr
+                    <input style="width: 5%" type="text" value="0">
+                    min
+                    <input style="width: 5%" type="text" value="30">
+                    sec
+                </div>
+                <div style="padding: 8px;" id="modal-export-name">
+                    Filename:
+                    <input style="width: 50%" type="text" value="Filename">
+                    <select style="width: 20%; float: right;" name="codecs">
+                        <option value="mp3">MP3</option>
+                        <option value="wav">WAV</option>
+                        <option value="flac">FLAC</option>
+                        <option value="ogg">OGG</option>
+                    </select>
+                </div>
+                <div style="padding: 8px; float: right;">
+                    <button id="modal-export-confirm" onclick="popupClose(this)" type="button">Export</button>
+                    <button id="modal-export-close" onclick="popupClose(this)" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-save" class="modal-box">
+            <div class="modal-header">
+                Preset Saved.
+            </div>
+        </div>
+
+        <div class="main">
+            <h1>Ambient Noise Generator</h1>
+            <div class="grid-container">
+
+                <div class="item1">
+                    <audio loop src="ambientSounds/fire_light.wav" data-counter="0" master-PlayPause-Control="1" id="lowaudio1"></audio>
+                    <audio loop src="ambientSounds/fire_medium.wav" data-counter="0" master-PlayPause-Control="1" id="medaudio1"></audio>
+                    <audio loop src="ambientSounds/fire_heavy.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio1"></audio>
+
+                    <i class="sample-icon material-icons" style="opacity:0.5" id="swapImage1" onclick="playPause(this, volume1)" current-audio=medaudio1>whatshot</i>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage1)" type="range" id="volume1" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio1, swapImage1, volume1)" class="toggle_option_1" id="low1" name="toggle_option_1">
+                            <input type="radio" onclick="intensityButton(medaudio1, swapImage1, volume1)" checked class="toggle_option_1" id="med1" name="toggle_option_1">
+                            <input type="radio" onclick="intensityButton(highaudio1, swapImage1, volume1)" class="toggle_option_1" id="high1" name="toggle_option_1">
+                            <label for="low1">Low</label>
+                            <label for="med1">Med</label>
+                            <label for="high1">High</label>
+                            <div class="toggle_option_slider1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item2">
+                    <audio loop src="ambientSounds/wind_light.mp3" data-counter="0" master-PlayPause-Control="1" id="lowaudio2"></audio>
+                    <audio loop src="ambientSounds/wind_medium.wav" data-counter="0" master-PlayPause-Control="1" id="medaudio2"></audio>
+                    <audio loop src="ambientSounds/wind_heavy.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio2"></audio>
+
+                    <i class="sample-icon fas fa-wind" style="opacity:0.5" id="swapImage2" onclick="playPause(this, volume2)" current-audio=medaudio2></i>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage2)" type="range" id="volume2" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio2, swapImage2, volume2)" class="toggle_option_2" id="low2" name="toggle_option_2">
+                            <input type="radio" onclick="intensityButton(medaudio2, swapImage2, volume2)" checked class="toggle_option_2" id="med2" name="toggle_option_2">
+                            <input type="radio" onclick="intensityButton(highaudio2, swapImage2, volume2)" class="toggle_option_2" id="high2" name="toggle_option_2">
+                            <label for="low2">Low</label>
+                            <label for="med2">Med</label>
+                            <label for="high2">High</label>
+                            <div class="toggle_option_slider2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item3">
+                    <audio loop src="ambientSounds/waves_light.wav" data-counter="0" master-PlayPause-Control="1" id="lowaudio3"></audio>
+                    <audio loop src="ambientSounds/waves_medium.wav" data-counter="0" master-PlayPause-Control="1" id="medaudio3"></audio>
+                    <audio loop src="ambientSounds/waves_heavy.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio3"></audio>
+
+                    <i class="sample-icon material-icons" style="opacity:0.5" id="swapImage3" onclick="playPause(this, volume3)" current-audio=medaudio3>waves</i>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage3)" type="range" id="volume3" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio3, swapImage3, volume3)" class="toggle_option_3" id="low3" name="toggle_option_3">
+                            <input type="radio" onclick="intensityButton(medaudio3, swapImage3, volume3)" checked class="toggle_option_3" id="med3" name="toggle_option_3">
+                            <input type="radio" onclick="intensityButton(highaudio3, swapImage3, volume3)" class="toggle_option_3" id="high3" name="toggle_option_3">
+                            <label for="low3">Low</label>
+                            <label for="med3">Med</label>
+                            <label for="high3">High</label>
+                            <div class="toggle_option_slider3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item4">
+                    <audio loop src="ambientSounds/noise_white.wav" data-counter="0" master-PlayPause-Control="1" id="lowaudio4"></audio>
+                    <audio loop src="ambientSounds/noise_pink.wav" data-counter="0" master-PlayPause-Control="1" id="medaudio4"></audio>
+                    <audio loop src="ambientSounds/noise_brown.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio4"></audio>
+
+                    <i class="sample-icon material-icons" style="opacity:0.5" id="swapImage4" onclick="playPause(this, volume4)" current-audio=medaudio4>graphic_eq</i>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage4)" type="range" id="volume4" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio4, swapImage4, volume4)" class="toggle_option_4" id="low4" name="toggle_option_4">
+                            <input type="radio" onclick="intensityButton(medaudio4, swapImage4, volume4)" checked class="toggle_option_4" id="med4" name="toggle_option_4">
+                            <input type="radio" onclick="intensityButton(highaudio4, swapImage4, volume4)" class="toggle_option_4" id="high4" name="toggle_option_4">
+                            <label for="low4">Low</label>
+                            <label for="med4">Med</label>
+                            <label for="high4">High</label>
+                            <div class="toggle_option_slider4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item5">
+                    <audio loop src="ambientSounds/birdsong_light.wav" data-counter="0" master-PlayPause-Control="1" id="lowaudio5"></audio>
+                    <audio loop src="ambientSounds/birdsong_medium.mp3" data-counter="0" master-PlayPause-Control="1" id="medaudio5"></audio>
+                    <audio loop src="ambientSounds/birdsong_heavy.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio5"></audio>
+
+                    <div style="text-align: center; width: 100%">
+                        <img src=".\Assets\bird.png" style="opacity:0.5" width=160px height=160px id="swapImage5" onclick="playPause(this, volume5)" current-audio=medaudio5>
+                    </div>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage5)" type="range" id="volume5" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio5, swapImage5, volume5)" class="toggle_option_5" id="low5" name="toggle_option_5">
+                            <input type="radio" onclick="intensityButton(medaudio5, swapImage5, volume5)" checked class="toggle_option_5" id="med5" name="toggle_option_5">
+                            <input type="radio" onclick="intensityButton(highaudio5, swapImage5, volume5)" class="toggle_option_5" id="high5" name="toggle_option_5">
+                            <label for="low5">Low</label>
+                            <label for="med5">Med</label>
+                            <label for="high5">High</label>
+                            <div class="toggle_option_slider5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item6">
+                    <audio loop src="ambientSounds/rain_light.wav" data-counter="0" master-PlayPause-Control="1" id="lowaudio6"></audio>
+                    <audio loop src="ambientSounds/rain_medium.wav" data-counter="0" master-PlayPause-Control="1" id="medaudio6"></audio>
+                    <audio loop src="ambientSounds/rain_heavy.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio6"></audio>
+
+                    <i class="sample-icon fas fa-cloud-rain" style="opacity:0.5" id="swapImage6" onclick="playPause(this, volume6)" current-audio=medaudio6></i>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage6)" type="range" id="volume6" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio6, swapImage6, volume6)" class="toggle_option_6" id="low6" name="toggle_option_6">
+                            <input type="radio" onclick="intensityButton(medaudio6, swapImage6, volume6)" checked class="toggle_option_6" id="med6" name="toggle_option_6">
+                            <input type="radio" onclick="intensityButton(highaudio6, swapImage6, volume6)" class="toggle_option_6" id="high6" name="toggle_option_6">
+                            <label for="low6">Low</label>
+                            <label for="med6">Med</label>
+                            <label for="high6">High</label>
+                            <div class="toggle_option_slider6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item7">
+                    <audio loop src="ambientSounds/cars_light.wav" data-counter="0" master-PlayPause-Control="1" id="lowaudio7"></audio>
+                    <audio loop src="ambientSounds/cars_medium.wav" data-counter="0" master-PlayPause-Control="1" id="medaudio7"></audio>
+                    <audio loop src="ambientSounds/cars_heavy.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio7"></audio>
+
+                    <i class="sample-icon fas fa-car-side" style="opacity:0.5" id="swapImage7" onclick="playPause(this, volume7)" current-audio=medaudio7></i>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage7)" type="range" id="volume7" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio7, swapImage7, volume7)" class="toggle_option_7" id="low7" name="toggle_option_7">
+                            <input type="radio" onclick="intensityButton(medaudio7, swapImage7, volume7)" checked class="toggle_option_7" id="med7" name="toggle_option_7">
+                            <input type="radio" onclick="intensityButton(highaudio7, swapImage7, volume7)" class="toggle_option_7" id="high7" name="toggle_option_7">
+                            <label for="low7">Low</label>
+                            <label for="med7">Med</label>
+                            <label for="high7">High</label>
+                            <div class="toggle_option_slider7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item8">
+                    <audio loop src="ambientSounds/river_light.wav" data-counter="0" master-PlayPause-Control="1" id="lowaudio8"></audio>
+                    <audio loop src="ambientSounds/river_medium.wav" data-counter="0" master-PlayPause-Control="1" id="medaudio8"></audio>
+                    <audio loop src="ambientSounds/river_heavy.wav" data-counter="0" master-PlayPause-Control="1" id="highaudio8"></audio>
+
+                    <div style="text-align: center; width: 100%">
+                        <img src=".\Assets\waterfall.png" style="opacity:0.5" width=160px height=160px id="swapImage8" onclick="playPause(this, volume8)" current-audio=medaudio8>
+                    </div>
+                    <div class="sample-volume">
+                        <input class="slider" oninput="sliderVolume(this, swapImage8)" type="range" id="volume8" min="0" max="100" step="1" value="0">
+                    </div>
+                    <div class="three-state-button">
+                        <div class="toggle_radio">
+                            <input type="radio" onclick="intensityButton(lowaudio8, swapImage8, volume8)" class="toggle_option_8" id="low8" name="toggle_option_8">
+                            <input type="radio" onclick="intensityButton(medaudio8, swapImage8, volume8)" checked class="toggle_option_8" id="med8" name="toggle_option_8">
+                            <input type="radio" onclick="intensityButton(highaudio8, swapImage8, volume8)" class="toggle_option_8" id="high8" name="toggle_option_8">
+                            <label for="low8">Low</label>
+                            <label for="med8">Med</label>
+                            <label for="high8">High</label>
+                            <div class="toggle_option_slider8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--
+            <div>
+                Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> 
+                from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by 
+                <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+            </div>
+        -->
+
+        
+    <script>
+
+        var masterVolumeScale = 0.5;
+        var sliderValues = [0,0,0,0,0,0,0,0];
+
+        //script that is run when the play/pause button is clicked
+        function playPause(elem, slider) {
+            var currentSound = document.getElementById(elem.getAttribute("current-audio"));
+            console.log(currentSound.volume);
+            if(currentSound.getAttribute("data-counter") == 0){
+                //play current sound if paused
+                console.log("playing");
+                if(currentSound.getAttribute("master-PlayPause-Control") == 1){
+                    currentSound.play();
+                }
+                currentSound.volume = (masterVolumeScale*slider.value)/slider.max;
+                currentSound.setAttribute("data-counter", 1);
+                elem.style.opacity = "1";
+            }else{
+                //pause current sound if playing
+                console.log("pausing");
+                currentSound.pause();
+                currentSound.setAttribute("data-counter", 0);
+                elem.style.opacity = "0.5";
+            }
+        }
+        
+        //pauses current sound (if one is playing), sets current audio and plays
+        function intensityButton(audio, image, slider) {
+            var currentSound = document.getElementById(image.getAttribute("current-audio"));
+			var playing = currentSound.getAttribute("data-counter");
+            currentSound.setAttribute("data-counter", 0);
+            if(currentSound.getAttribute("master-PlayPause-Control") == 1)
+            {
+                currentSound.pause();
+            }
+            image.setAttribute("current-audio", audio.id);
+            currentSound = document.getElementById(image.getAttribute("current-audio"));
+            if(currentSound.getAttribute("master-PlayPause-Control") == 1 && playing == 1)
+            {
+                currentSound.play();
+				currentSound.setAttribute("data-counter", 1);
+            }
+            currentSound.volume = (masterVolumeScale*slider.value)/slider.max;
+        }
+        
+        
+        
+        //updates volume whenever slider is changed
+        function sliderVolume(elem, image) {
+            var currentSound = document.getElementById(image.getAttribute("current-audio"));
+            currentSound.volume = (masterVolumeScale*elem.value)/elem.max;
+            var searchPattern = elem.id;
+            regex = new RegExp(/([0-9])/g);
+            matches = searchPattern.match(regex);
+            sliderValues[matches[0]-1] = elem.value;
+        }
+
+        function masterSliderVolume(elem){
+            masterVolumeScale = elem.value/elem.max;
+            var elems = document.querySelectorAll("audio");
+            var index = 0;
+            for(i = 0; i < 8; i++){
+                for(j = 0; j < 3; j ++){
+                    elems[index].volume = (masterVolumeScale*sliderValues[i])/100;
+                    index += 1;
+                }
+            }
+
+            var icon = document.getElementById("volumeIcon");            
+            if(elem.value > 75){
+                icon.innerHTML = "volume_up"
+            }
+            else if(elem.value == 0){
+                icon.innerHTML = "volume_mute"
+            }
+            else{
+                icon.innerHTML = "volume_down"
+            }
+        }
+
+        function masterPlayPause(image){
+            if(image.innerHTML == "play_circle_outline"){
+                image.innerHTML = "pause_circle_outline";
+            }
+            else
+            {
+                image.innerHTML = "play_circle_outline";
+            }
+            
+            var elems = document.querySelectorAll("audio");
+            [].forEach.call(elems, function(elem){ muteSounds(elem) });
+        }
+
+        function muteSounds(elem){
+            // if master is paused
+            if(elem.getAttribute("master-PlayPause-Control") == 0)
+            {
+                // but the sound was playing, then play the sound
+                if( elem.getAttribute("data-counter") == 1)
+                {
+                    elem.play();
+                }
+                elem.setAttribute("master-PlayPause-Control", 1);
+            }
+            else
+            {
+                elem.pause();
+                elem.setAttribute("master-playPause-Control", 0);
+            }
+        }
+        
+        function importPopup(){
+            var modal = document.getElementById('modal-import');
+            modal.style.display = "block";
+        }
+
+        function exportPopup(){
+            var modal = document.getElementById('modal-export');
+            modal.style.display = "block";
+        }
+
+        function popupClose(elem){
+            var modal = document.getElementById(elem.id).parentElement.parentElement.parentElement;
+            modal.style.display = "none";
+        }
+
+        function savePopup(){
+            var modal = document.getElementById('modal-save');
+            modal.style.display = "block";
+            setTimeout(function(){modal.style.display = "none"}, 1000)
+        }
+        
+    </script>   
+    </body>
+</html>

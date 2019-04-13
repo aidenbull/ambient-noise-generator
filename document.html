@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+body {font-size:16px;}
+.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
+.w3-half img:hover{opacity:1}
+</style>
+<body>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+  <div class="w3-container">
+    <h3 class="w3-padding-64"><b>Ambient Noise<br>Generator</b></h3>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Introduction</a> 
+    <a href="#one" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Implementation</a> 
+    <a href="#two" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Prototype description</a> 
+    <a href="#three" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Choices and Deviations</a> 
+    <a href="#four" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Requirement 1</a> 
+    <a href="#five" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Requirement 2</a>
+    <a href="#six" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Requirement 3</a>
+    <a href="#seven" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Requirement 4</a>
+    <a href="#eight" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Requirement 5</a>
+    <a href="#nine" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Requirement 6</a>
+  </div>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+  <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
+  <span>Company Name</span>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:340px;margin-right:40px">
+
+  <!-- Introduction/Header -->
+  <div class="w3-container" style="margin-top:80px">
+    <h1 class="w3-jumbo"><b>Ambient Noise Generator Part 3</b></h1>
+
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <h3>V00865941</h3>
+      </div>
+
+      <div class="w3-third">
+        <h3>V00867500</h3>
+      </div>
+
+      <div class="w3-third">
+        <h3>V00874629</h3>
+      </div>
+    </div>
+
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <h3>V00875931</h3>
+      </div>
+
+      <div class="w3-third">
+        <h3>V00832107</h3>
+      </div>
+    </div>
+
+    <h1 class="w3-xxxlarge w3-text-red"><b>Introduction</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p>This page will discuss a more high fidelity prototype of the Ambient Noise Generator website. The prototype built includes interactive elements that encompasses the main functionalities of our design.  The prototype can be found at: <a href="https://corbingraham.github.io/SENG_310_phase_3/" style="color:blue">Prototype</a>.  It was constructed in accordance with the previously created low fidelity prototype and user requirements which can be found at <a href="https://corbingraham.github.io/SENG_310_phase_1/" style="color:blue">Phase 1</a> and <a href="https://corbingraham.github.io/SENG_310_phase_2/" style="color:blue">Phase 2</a> respectively.
+    </p>
+  </div>
+
+  <!-- Implementation -->
+  <div class="w3-container" style="margin-top:80px" id="one">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Implementation</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p>The Ambient Noise Generator prototype was created mainly with HTML5 and CSS3 with Javascript also being used to play music and adjust volume. Github pages, a free service provided by Github, was used to host the website online. Most icons were taken from Font Awesome 5 and Google while some miscellaneous icons used were taken from <a href="https://www.flaticon.com/" style="color:blue">https://www.flaticon.com/</a>. The audio files were sourced from <a href="http://freesound.org/" style="color:blue">http://freesound.org/</a>. The source code and assets for the prototype can be found at: <a href="https://corbingraham.github.io/SENG_310_phase_3/" style="color:blue">https://github.com/CorbinGraham/SENG_310_phase_3/</a>.</p>
+  </div>
+
+  <!-- Prototype Description -->
+  <div class="w3-container" id="two" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Prototype description</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p>The prototype created closely followed the design scheme of our low fidelity prototype with a few minor changes which will be discussed below. The webpage is live and fully interactive in the simple layout we envisioned.</p>
+    <p>Low fidelity model:</p>
+    <img alt="" src="Assets/image1.png">
+    <p>High fidelity model:</p>
+    <img alt="" width=85% src="Assets/image4.png">
+    <p>Minor adjustments were made in our higher fidelity prototype such as the choice of fonts and removal of sound sample headings. However, the overall layout and look of the site has been kept. </p>
+    <p>The main functionalities of our site such as being able to play/pause different sounds and adjust the volumes of each have been implemented. The master play/pause and volume button is also working. Additionally, though not fully functional, clicking on the import and export button will show users the interface we drafted in our low fidelity prototype. The functionalities implemented will be explained in detail in relation to our user requirements below.</p>
+  </div>
+  
+  <!-- Choices and Deviations -->
+  <div class="w3-container" id="three" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Choices and Deviations</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p>During the creation of the prototype and implementation of the requirements, some design decisions and choices were made which strayed from the predicted requirements. These deviations were due to different issues, some of which will be further explained in the specific requirement.</p>
+    <p>The main differences were in the design choice of the main webpage. The title font used was ‘Alef’ instead of ‘Quinta’ due to payment issues. The fonts for the buttons and import/export interface was not specified so similarly sans-serif font, Arial, from the Helvetica family was chosen. Another one was the removal of sound sample headings, which was done so to create a more minimalistic look to the site. Finally, although we have tried to use our original color scheme of blue and yellow, we found that the yellow heading makes the title much harder to read. Thus, we’ve changed it to white instead.</p>
+  </div>
+
+  <!-- Requirement 1 -->
+  <div class="w3-container" id="four" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Requirement 1</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p><b>“There should be a library of existing/premade common sound samples on the website. Initial requirements will be for 20 different sounds, drawing primarily from natural sounds (e.g. birdsong, fire, waves, etc.).”</b></p>
+    <p>The library of existing sounds was reduced to 8 for the prototype due to time constraints. We based our choices on sounds currently available/popular on similar applications. Also, due to our limited library, we picked ones that were distinct enough to allow users to create varied soundscapes.</p>
+  </div>
+  
+  <!-- Requirement 2 -->
+  <div class="w3-container" id="five" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Requirement 2</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p><b>“The user should be able to independently control the volume of any of the ambient sounds as well as being able to control the master volume.”</b></p>
+    <p>All the sounds in the current library can be interacted with by using their individual volume sliders which start at 0. The sample sounds can also be played or paused by clicking on their distinct icon symbol. Further, we added a design element that had each icon become highlighted when clicked to give user feedback that the sound is now playing.</p>
+      
+    <img alt="" src="Assets/image2.png">
+    <img alt="" src="Assets/image5.png">
+    <p>In addition, the master volume button which can be manipulated at the top right of the page allows users to control the loudness of the entire soundscape on a scale of 0 to 100.</p>
+  </div>
+
+  <!-- Requirement 3 -->
+  <div class="w3-container" style="margin-top:80px" id="six">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Requirement 3</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p><b>“The user should be able to export an audio file, likely an mp3, based on the sounds they have chosen as well as the adjustments in volume that have been made to them.”</b></p>
+
+    <p>There is a button in the top left corner of the screen for exporting the current preset as an audio file. The button uses an arrow pointing to the right as its icon. Clicking on the icon will bring up a box prompting the user to select export settings. The actual exporting feature has not been implemented due to time constraints.
+    </p>
+    <h1 class="w3-xlarge w3-text-red"><b>Requirement 3.1</b></h1>
+    <p><b>“The user should be able to choose the length/format of the audio file that they are exporting”</b></p>
+    <img alt="" width=70% src="Assets/image6.png">
+
+    <p>The box created from clicking the export button prompts the user to select their desired sound length, file name, and file type. Because exporting is not implemented, these selection boxes do nothing.</p>
+
+    <h1 class="w3-xlarge w3-text-red"><b>Requirement 3.2</b></h1>
+    <p><b>“In addition to downloading the file, the user should be able to save the parameters as a preset that they can name and reuse when the user comes back.”</b></p>
+
+    <p>There is a button for saving presets in the top left corner of the screen. It uses the symbol of a floppy disk as an icon. Clicking on the icon will bring up a small dialogue box indicating that saving was successful. We were unable to actually implement the preset saving feature and by extension, we were unable to implement a feature for selecting saved presets.
+    </p>
+  </div>
+
+  <!-- Requirement 4 -->
+  <div class="w3-container" style="margin-top:80px" id="seven">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Requirement 4</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p><b>“Ability for a user to tweak the type of sounds that are being played. For each sound, there can be one or more variations on that sound to add variety to the product.”</b></p>
+
+    <p>The intensity of the sounds can be controlled with the three buttons below the volume controller of each sound sample . The buttons on click run javascript code that changes the sound to a lower or higher intensity version of the sound. The design of highlighting buttons when clicked is also included to help users identify which intensity they’re currently using.</p>
+  </div>
+
+  <!-- Requirement 5 -->
+  <div class="w3-container" style="margin-top:80px" id="eight">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Requirement 5</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p><b>“There should be an option that allows the users to upload any sound sample that they want. The uploaded sample will have the same volume control option as all the default sound samples but will not have an intensity option. The file format will be restricted to whatever sound file is used for the samples, and the custom sounds will remain local to the computer that they are uploaded from.”</b></p>
+    <img alt="" width=70% src="Assets/image3.png">
+
+    <p>An import button has been included in the top left corner of the screen. It uses an intuitive plus symbol as an icon. Clicking on the icon will bring up a box asking the user to input the sound name, the sound file, and the file to be used as an icon. We were unable to fully implement the importing functionality due to time constraints.</p>
+
+    <h1 class="w3-xlarge w3-text-red"><b>Requirement 5.1</b></h1>
+    <p><b>“Users should have the ability to remove samples that they have uploaded.”</b></p>
+
+    <p>We were unable to implement imported sound effects, and because of this we don’t have an option for removing uploaded samples.</p>
+  </div>
+
+  <!-- Requirement 6 -->
+  <div class="w3-container" style="margin-top:80px" id="nine">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Requirement 6</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p><b>“There should be a play/pause button so that users can stop or resume playback of sound samples.”</b></p>
+
+    <p>A functional master play/pause button have been implemented at the top rightmost corner of the screen. This allows users to easily pause and resume playback without having to select/reselect the samples they’ve chosen. The button also alternates between play and pause depending on the state as planned in phase 2.</p>
+  </div>
+
+<!-- End page content -->
+</div>
+
+<!-- W3.CSS Container -->
+<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+</script>
+
+</body>
+</html>
+<h1 class="w3-xlarge w3-text-red"><b>Requirement 5.1</b></h1>

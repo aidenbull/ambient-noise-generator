@@ -1,0 +1,68 @@
+<!-- javascript tester -->
+<!DOCTYPE html>
+<html>
+<body>
+	<p>
+		Click image to play/pause
+	</p>
+	<div id="div1">		
+		<!-- audio files for low, med, and high respectively -->
+		<audio loop src="bells.mp3" id="audio1">
+		</audio>
+		<audio loop src="waves.mp3" id="audio2">
+		</audio>
+		<audio loop src="wilhelm.mp3" id="audio3">
+		</audio>
+
+		<!-- Object for play/pause button, initially set src to play -->
+		<img id="swapImage1" onclick="playPause(this, myRange1)" src="play.png" style="height: 85px; width: 85px" data-counter="0" current-audio=audio2>
+		
+		<!-- slider object -->
+		<input type="range" oninput="sliderVolume(this, swapImage1)" min="0" max="100" value="50" class="slider" id="myRange1">
+		
+		<!-- button objects -->
+		<button type="button" onclick="intensityButton(audio1, swapImage1, myRange1)" id="low1">low</button>
+		<button type="button" onclick="intensityButton(audio2, swapImage1, myRange1)" id="med1">med</button>
+		<button type="button" onclick="intensityButton(audio3, swapImage1, myRange1)" id="high1">high</button>
+	</div>
+	
+	<script>
+		//script that is run when the play/pause button is clicked
+		function playPause(elem, slider) {
+			var currentSound = document.getElementById(elem.getAttribute("current-audio"));
+			if(elem.getAttribute("data-counter") == 0){
+				//play current sound if paused
+				console.log("playing");
+				currentSound.play();
+				currentSound.volume = slider.value/100;
+				elem.src = "pause.png";
+				elem.setAttribute("data-counter", 1);
+			}else{
+				//pause current sound if playing
+				console.log("pausing");
+				currentSound.pause();
+				elem.src = "play.png";
+				elem.setAttribute("data-counter", 0);
+			}
+		}
+		
+		//pauses current sound (if one is playing), sets current audio and plays
+		function intensityButton(audio, image, slider) {
+			var currentSound = document.getElementById(image.getAttribute("current-audio"));
+			currentSound.pause();
+			image.setAttribute("current-audio", audio.id);
+			currentSound = document.getElementById(image.getAttribute("current-audio"));
+			currentSound.play();
+			currentSound.volume = slider.value/100;
+			image.src = "pause.png";
+			image.setAttribute("data-counter", 1);
+		}
+		
+		//updates volume whenever slider is changed
+		function sliderVolume(elem, image) {
+			var currentSound = document.getElementById(image.getAttribute("current-audio"));
+			currentSound.volume = elem.value/100;
+		}
+	</script>	
+</body>
+</html>
